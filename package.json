@@ -1,0 +1,24 @@
+{
+  "name": "e-dnevnik-webui",
+  "version": "0.0.1",
+  "description": "Veb interfejs za elektronski dnevnik.",
+  "main": "app.js",
+  "scripts": {
+    "test": "xo"
+  },
+  "keywords": [
+    "elektronski",
+    "dnevnik",
+    "e-dnevnik",
+    "webui",
+    "ui",
+    "interface",
+    "interfejs"
+  ],
+  "author": "Dušan Simić <dusan.simic1810@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "bootstrap-vue": "^1.0.0-beta.9"
+  }
+}
