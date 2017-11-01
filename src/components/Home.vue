@@ -14,7 +14,7 @@ export default {
 		}
 	},
 	created: function() {
-		fetch('http://localhost:3000/api/myname').then(res => res.json()).then(data => {
+		fetch('https://localhost:3000/api/myname').then(res => res.json()).then(data => {
 			this.myName = data.name.toString() + ' ' + data.surname.toString();
 		}).catch(err => {
 			if (err) {
