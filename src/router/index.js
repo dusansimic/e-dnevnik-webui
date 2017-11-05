@@ -5,7 +5,7 @@ import StudentSearch from '@/components/StudentSearch'
 import AddStudent from '@/components/AddStudent'
 import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.esm'
 
-import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.min.theme.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.use(Router)

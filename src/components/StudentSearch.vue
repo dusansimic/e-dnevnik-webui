@@ -59,10 +59,8 @@ export default {
 	},
 	methods: {
 		searchStudents: function() {
-			let payload = JSON.parse(JSON.stringify(this.queryData));
-
 			let data = new FormData();
-			data.append('json', JSON.stringify(payload));
+			data.append('json', JSON.stringify(this.queryData));
 
 			fetch('https://localhost:3000/api/queryUcenici', {
 				method: 'POST',

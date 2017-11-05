@@ -1,8 +1,20 @@
 <template>
 	<div class="AddStudent">
+		<div class="alert alert-dismissable alert-danger" v-if="alertData.showAlert && alertData.isBad">
+			<button type="button" class="close" data-dismiss="alert" @click="hideAlerts()">&times;</button>
+			{{ alertData.alertMessage }}
+		</div>
+		<div class="alert alert-dismissable alert-warning" v-if="alertData.showAlert && alertData.isWarn">
+			<button type="button" class="close" data-dismiss="alert" @click="hideAlerts()">&times;</button>
+			{{ alertData.alertMessage }}
+		</div>
+		<div class="alert alert-dismissable alert-success" v-else-if="alertData.showAlert">
+			<button type="button" class="close" data-dismiss="alert" @click="hideAlerts()">&times;</button>
+			{{ alertData.alertMessage }}
+		</div>
 		<div class="panel panel-default" id="addStudentPanel">
 			<div class="panel-body">
-				<form action="" role="search" class="form-horizontal"></form>
+				<form role="search" class="form-horizontal"></form>
 					<fieldset>
 						<legend>Add Student</legend>
 						<div class="form-group">
@@ -54,7 +66,7 @@
 						<div class="form-group">
 							<div class="col-lg-10 col-lg-offset-2">
 								<button type="reset" class="btn btn-default">Cancel</button>
-								<button type="submit" class="btn btn-primary" @click="addStudent()">Add</button>
+								<button type="button" class="btn btn-primary" @click="addStudent()">Add</button>
 							</div>
 						</div>
 					</fieldset>
@@ -72,17 +84,64 @@ export default {
 			studentData: {
 				name: '',
 				surname: '',
-				jmbg: 0,
+				jmbg: null,
 				rodjen: '',
-				razred: 0,
-				odeljenje: 0,
+				razred: null,
+				odeljenje: null,
 				ispisan: undefined
+			},
+			alertData: {
+				alertMessage: '',
+				showAlert: false,
+				isBad: false,
+				isWarn: false
 			}
 		}
 	},
 	methods: {
 		addStudent: function () {
-			// Implement method for adding students
+			// Add student
+
+			fetch('http://localhost:3000/api/addUcenik', {
+				method: 'POST',
+				headers: new Headers({
+					'Content-Type': 'application/json'
+				}),
+				body: JSON.stringify(this.studentData)
+			}).then(res => res.json()).then(response => {
+				if (!response.added && response.error) {
+					this.alertData.isBad = true;
+					this.alertData.isWarn = false;
+					this.alertData.showAlert = true;
+					this.alertData.alertMessage = response.error.message;
+					console.error(response.error);
+				} else if (!response.added && response.warn) {
+					this.alertData.isBad = false;
+					this.alertData.isWarn = true;
+					this.alertData.showAlert = true;
+					this.alertData.alertMessage = response.warn.message;
+				} else {
+					this.alertData.isBad = false;
+					this.alertData.showAlert = true;
+					this.alertData.alertMessage = 'Ucenik je dodat!';
+				}
+			}).catch(err => {
+				console.error(err);
+			});
+
+			// Clear the input
+			this.studentData = {
+				name: '',
+				surname: '',
+				jmbg: null,
+				rodjen: '',
+				razred: null,
+				odeljenje: null,
+				ispisan: undefined
+			};
+		},
+		hideAlerts: function () {
+			this.alertData.showAlert = false;
 		}
 	}
 }
@@ -92,6 +151,10 @@ export default {
 #addStudentPanel {
 	width: 500px;
 	margin-left: calc((100% - 500px)/2);
+}
+.alert {
+	width: 250px;
+	margin-left: calc((100% - 250px)/2);
 }
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
