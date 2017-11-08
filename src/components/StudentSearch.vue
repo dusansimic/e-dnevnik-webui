@@ -1,16 +1,20 @@
 <template>
 	<div class="StudentSearch">
+		<div class="alert alert-dismissable alert-danger" v-if="alertData.showAlert && alertData.isBad">
+			<button type="button" class="close" data-dismiss="alert" @click="hideAlerts()">&times;</button>
+			{{ alertData.alertMessage }}
+		</div>
+		<div class="alert alert-dismissable alert-warning" v-else-if="alertData.showAlert && alertData.isWarn">
+			<button type="button" class="close" data-dismiss="alert" @click="hideAlerts()">&times;</button>
+			{{ alertData.alertMessage }}
+		</div>
+		<div class="alert alert-dismissable alert-success" v-else-if="alertData.showAlert">
+			<button type="button" class="close" data-dismiss="alert" @click="hideAlerts()">&times;</button>
+			{{ alertData.alertMessage }}
+		</div>
 		<div class="panel panel-default" id="searchPanel">
 			<div class="panel-body">
 				<form action="" role="search" class="form-horizontal"></form>
-					<!--<div id="searchBar" class="form-group">
-						<div class="input-group">
-							<input type="text" class="form-control" v-model="queryString"></input>
-							<span class="input-group-btn">
-								<button type="button" class="btn btn-default">Search</button>
-							</span>
-						</div>
-					</div>-->
 					<fieldset>
 						<legend>Search Students</legend>
 						<div class="form-group">
@@ -37,8 +41,13 @@
 		</div>
 		<div id="results">
 			<ul>
-				<li v-for="student in studentList" v-bind:key="student._id">
-					<p>{{ student.name }} {{ student.surname }} {{ student.age }}</p>
+				<li v-for="student in studentList" v-bind:key="student.id">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<h3>{{ student.name }} {{ student.surname }}</h3>
+							<p>Born {{ getStudentDOB(student.rodjen) }}</p>
+						</div>
+					</div>
 				</li>
 			</ul>
 		</div>
@@ -54,20 +63,68 @@ export default {
 				name: '',
 				surname: ''	
 			},
+			alertData: {
+				alertMessage: '',
+				showAlert: false,
+				isBad: false,
+				isWarn: false
+			},
 			studentList: []
 		}
 	},
 	methods: {
 		searchStudents: function() {
-			let data = new FormData();
-			data.append('json', JSON.stringify(this.queryData));
-
-			fetch('https://localhost:3000/api/queryUcenici', {
+			// Send query data
+			fetch('http://localhost:3000/api/queryUcenici', {
 				method: 'POST',
-				body: data
+				headers: new Headers({
+					'Content-Type': 'application/json'
+				}),
+				body: JSON.stringify(this.queryData)
 			}).then(res => res.json()).then(data => {
-				this.studentList = JSON.parse(JSON.stringify(data));
+				if (data.error) {
+					this.alertData.isBad = true;
+					this.alertData.isWarn = false;
+					this.alertData.showAlert = true;
+					this.alertData.alertMessage = data.error.message;
+				} else if (data.warn) {
+					this.alertData.isBad = false;
+					this.alertData.isWarn = true;
+					this.alertData.showAlert = true;
+					this.alertData.alertMessage = data.warn.message;
+				} else {
+					this.alertData.isBad = false;
+					this.alertData.isWarn = data.length ? false : true;
+					this.alertData.showAlert = true;
+					if (data.length > 1) {
+						this.alertData.alertMessage = 'Ucenici su pronadjeni!';
+					} else if (data.length == 1) {
+						this.alertData.alertMessage = 'Ucenik je pronadjen!';
+					} else {
+						this.alertData.alertMessage = 'Ni jedan ucenik nije pronadjen!';
+					}
+
+					this.studentList = JSON.parse(JSON.stringify(data));
+				}
+			}).catch(err => {
+				this.alertData.isBad = true;
+				this.alertData.isWarn = false;
+				this.alertData.showAlert = true;
+				this.alertMessage = err.message;
 			});
+
+			this.queryData = {
+				name: '',
+				surname: ''
+			}
+		},
+		hideAlerts: function () {
+			this.alertData.showAlert = false;
+		},
+		getStudentDOB: function (date) {
+			date.slice(4, 4);
+			date.slice(6, 4);
+			return this.$moment(date, 'YYYYMMDD').fromNow();
 		}
 	}
 }
@@ -77,5 +134,17 @@ export default {
 #searchPanel {
 	width: 500px;
 	margin-left: calc((100% - 500px)/2);
+}
+#results ul {
+	padding: 0;
+	list-style-type: none;
+}
+#results ul li {
+	width: 500px;
+	margin-left: calc((100% - 500px)/2);
+}
+.alert {
+	width: 250px;
+	margin-left: calc((100% - 250px)/2);
 }
 </style>

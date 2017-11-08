@@ -24,7 +24,9 @@
   "dependencies": {
     "bootstrap": "^3.3.7",
     "bootstrap-vue": "^1.0.0-beta.9",
+    "moment": "^2.19.1",
     "vue": "^2.5.2",
+    "vue-momentjs": "^0.1.1",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {

@@ -4,7 +4,7 @@
 			<button type="button" class="close" data-dismiss="alert" @click="hideAlerts()">&times;</button>
 			{{ alertData.alertMessage }}
 		</div>
-		<div class="alert alert-dismissable alert-warning" v-if="alertData.showAlert && alertData.isWarn">
+		<div class="alert alert-dismissable alert-warning" v-else-if="alertData.showAlert && alertData.isWarn">
 			<button type="button" class="close" data-dismiss="alert" @click="hideAlerts()">&times;</button>
 			{{ alertData.alertMessage }}
 		</div>
@@ -84,11 +84,11 @@ export default {
 			studentData: {
 				name: '',
 				surname: '',
-				jmbg: null,
+				jmbg: '',
 				rodjen: '',
-				razred: null,
-				odeljenje: null,
-				ispisan: undefined
+				razred: 0,
+				odeljenje: 0,
+				ispisan: false
 			},
 			alertData: {
 				alertMessage: '',
@@ -109,35 +109,39 @@ export default {
 				}),
 				body: JSON.stringify(this.studentData)
 			}).then(res => res.json()).then(response => {
-				if (!response.added && response.error) {
+				if (response.error) {
 					this.alertData.isBad = true;
 					this.alertData.isWarn = false;
 					this.alertData.showAlert = true;
 					this.alertData.alertMessage = response.error.message;
-					console.error(response.error);
-				} else if (!response.added && response.warn) {
+					console.log(response.error.toString());
+				} else if (response.warn) {
 					this.alertData.isBad = false;
 					this.alertData.isWarn = true;
 					this.alertData.showAlert = true;
-					this.alertData.alertMessage = response.warn.message;
+					this.alertData.alertMessage = response.warn;
 				} else {
 					this.alertData.isBad = false;
+					this.alertData.isWarn = false;
 					this.alertData.showAlert = true;
 					this.alertData.alertMessage = 'Ucenik je dodat!';
 				}
 			}).catch(err => {
-				console.error(err);
+				this.alertData.isBad = true;
+				this.alertData.isWarn = false;
+				this.alertData.showAlert = true;
+				this.alertData.alertMessage = err.message;
 			});
 
 			// Clear the input
 			this.studentData = {
 				name: '',
 				surname: '',
-				jmbg: null,
+				jmbg: '',
 				rodjen: '',
-				razred: null,
-				odeljenje: null,
-				ispisan: undefined
+				razred: 0,
+				odeljenje: 0,
+				ispisan: false
 			};
 		},
 		hideAlerts: function () {

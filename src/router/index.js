@@ -4,12 +4,15 @@ import Home from '@/components/Home'
 import StudentSearch from '@/components/StudentSearch'
 import AddStudent from '@/components/AddStudent'
 import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.esm'
+import moment from 'moment';
+import VueMomentJS from 'vue-momentjs';
 
-import 'bootstrap/dist/css/bootstrap.min.theme.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.use(Router)
 Vue.use(BootstrapVue)
+Vue.use(VueMomentJS, moment);
 
 export default new Router({
   routes: [
