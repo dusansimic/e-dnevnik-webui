@@ -9,13 +9,13 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Elektronski dnevnik</a>
+            <router-link class="navbar-brand" to="/">Elektronski dnevnik</router-link>
           </div>
 
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
               <li><router-link to="/">Home<!-- <span class="sr-only">(current)</span>--></router-link></li>
-              <li><router-link to="/search/students">Student Search</router-link></li>
+              <li><router-link to="/student/search">Student Search</router-link></li>
               <li><router-link to="/addstudent">Add Student</router-link></li>
             </ul>
           </div>

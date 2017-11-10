@@ -1,5 +1,6 @@
 <template>
 	<div class="AddStudent">
+		<img :src="studentData.image" />
 		<div class="alert alert-dismissable alert-danger" v-if="alertData.showAlert && alertData.isBad">
 			<button type="button" class="close" data-dismiss="alert" @click="hideAlerts()">&times;</button>
 			{{ alertData.alertMessage }}
@@ -135,6 +136,7 @@ export default {
 
 			// Clear the input
 			this.studentData = {
+				image: '',
 				name: '',
 				surname: '',
 				jmbg: '',
