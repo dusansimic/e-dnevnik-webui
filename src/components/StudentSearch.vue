@@ -42,11 +42,9 @@
 		<div id="results">
 			<ul>
 				<li v-for="student in studentList" v-bind:key="student.jmbg">
-					<div class="panel panel-default">
-						<div class="panel-body">
+					<div class="card border-dark">
+						<div class="card-body">
 							<h3>{{ student.name }} {{ student.surname }}</h3>
-							<p>Born {{ getStudentDOB(student.rodjen) }}</p>
-							<p>JMBG: {{ student.jmbg }}</p>
 							<p>Razred: {{ student.razred }}-{{ student.odeljenje }}</p>
 							<router-link to="/student/profile"><p v-on:click="viewStudent(student.jmbg)">View student</p></router-link>
 						</div>
@@ -125,9 +123,7 @@ export default {
 			this.alertData.showAlert = false;
 		},
 		getStudentDOB: function (date) {
-			date.slice(4, 4);
-			date.slice(6, 4);
-			return this.$moment(date, 'YYYYMMDD').fromNow();
+			return this.$moment(date, 'YYYY-MM-DD').fromNow();
 		},
 		viewStudent: function (jmbg) {
 			console.log('It runs');

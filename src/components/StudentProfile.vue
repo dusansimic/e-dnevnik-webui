@@ -1,7 +1,7 @@
 <template>
 	<div class="StudentProfile">
-		<div class="panel panel-default" id="studentData">
-			<div class="panel-body">
+		<div class="card border-dark" id="studentData">
+			<div class="card-body">
 				<h3>{{ student.name }} {{ student.surname }}</h3>
 				<p>Born {{ getStudentDOB(student.rodjen) }}</p>
 				<p>JMBG: {{ student.jmbg }}</p>

@@ -1,26 +1,20 @@
 <template>
   <div id="app">
     <div id="wrapper">
-      <nav class="navbar navbar-default" id="navbar">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <router-link class="navbar-brand" to="/">Elektronski dnevnik</router-link>
-          </div>
+      <nav class="navbar navbar-toggleable-md navbar-expand-lg navbar-dark bg-primary" id="navbar">
+        <router-link class="navbar-brand" to="/">Elektronski dnevnik</router-link>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-              <li><router-link to="/">Home<!-- <span class="sr-only">(current)</span>--></router-link></li>
-              <li><router-link to="/student/search">Student Search</router-link></li>
-              <li><router-link to="/addstudent">Add Student</router-link></li>
-            </ul>
-          </div>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><router-link class="nav-link" to="/">Home<!-- <span class="sr-only">(current)</span>--></router-link></li>
+            <li class="nav-item"><router-link class="nav-link" to="/student/search">Student Search</router-link></li>
+            <li class="nav-item"><router-link class="nav-link" to="/addstudent">Add Student</router-link></li>
+          </ul>
         </div>
-      </nav>
+      </nav></br>
       <router-view/>
     </div>
   </div>
@@ -44,5 +38,8 @@ export default {
 #wrapper {
   width: 700px;
   margin-left: calc((100% - 700px)/2);
+}
+#navbar {
+  border-radius: 10px;
 }
 </style>
